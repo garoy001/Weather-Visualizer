@@ -2,7 +2,7 @@ import { Sparkles } from '@react-three/drei';
 import * as THREE from 'three';
 import { Suspense, useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-
+import cloud from '/assets/cloud.png';
 export const Clouds = ({
 	count = 10,
 	height = 30,
@@ -17,7 +17,7 @@ export const Clouds = ({
 	// Geometry
 
 	const cloudRef = useRef();
-	const particleTexture = new THREE.TextureLoader().load('/assets/cloud.png');
+	const particleTexture = new THREE.TextureLoader().load(cloud);
 	const particleMaterial = new THREE.PointsMaterial({
 		size: size,
 		sizeAttenuation: true,
