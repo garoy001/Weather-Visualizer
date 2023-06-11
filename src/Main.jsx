@@ -17,7 +17,7 @@ export const Main = () => {
 	return (
 		<>
 			<Experience></Experience>
-			<OrbitControls />
+			{/* <OrbitControls /> */}
 			<ambientLight />
 			<directionalLight
 				ref={light}

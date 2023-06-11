@@ -7,8 +7,8 @@ import { useThree, useFrame } from '@react-three/fiber';
 import { Suspense, useRef } from 'react';
 export const Experience = () => {
 	useFrame((state) => {
-		// state.camera.lookAt(0, 10, -100);
-		// state.camera.position.set(0, 10, 30);
+		state.camera.lookAt(0, 10, -100);
+		state.camera.position.set(0, 10, 30);
 		// console.log(state);
 	});
 
