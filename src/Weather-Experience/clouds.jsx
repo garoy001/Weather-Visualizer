@@ -40,15 +40,12 @@ export const Clouds = ({
 		cloudRef.current.rotation.x = Math.PI * 0.05;
 	});
 	return (
-		<Suspense>
-			{' '}
-			<Sparkles
-				ref={cloudRef}
-				speed={speed}
-				noise={noise}
-				scale={[100, 17, 200]}
-				position={[0, 30, -5]}
-			/>
-		</Suspense>
+		<Sparkles
+			ref={cloudRef}
+			speed={speed}
+			noise={noise}
+			scale={[100, 17, 200]}
+			position={[0, 30, -5]}
+		/>
 	);
 };

@@ -22,9 +22,8 @@ export const Experience = () => {
 				config={{ mass: 2, tension: 400 }}
 				snap={{ mass: 4, tension: 400 }}
 			> */}
-			<Suspense>
-				<Clouds />
-			</Suspense>
+
+			<Clouds />
 
 			<group rotation-x={Math.PI * 0.05} position={[0, 0, 0]}>
 				<Grass position={[0, 0, 0]} />
