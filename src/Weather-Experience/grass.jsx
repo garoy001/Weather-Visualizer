@@ -50,7 +50,7 @@ export const Grass = ({
 }) => {
 	const grassGroup = useRef();
 	const geoGeometry = useRef();
-	console.log(geoGeometry);
+	// console.log(geoGeometry);
 
 	// console.log(grassGroup);
 	const { bW, bH, joints } = options;
@@ -79,8 +79,8 @@ export const Grass = ({
 	);
 
 	useEffect(() => {
-		console.log(geoGeometry.current);
-		console.log(geoGeometry.current.attributes.position.array[1]);
+		// console.log(geoGeometry.current);
+		// console.log(geoGeometry.current.attributes.position.array[1]);
 		const geo = geoGeometry.current;
 		geo.verticesNeedUpdate = true;
 
@@ -88,7 +88,7 @@ export const Grass = ({
 		// console.log(geoPos);
 		geo.lookAt(new THREE.Vector3(0, 1, 0));
 		const geoPos = geo.attributes.position;
-		console.log(geoGeometry.current.attributes.position.array[1]);
+		// console.log(geoGeometry.current.attributes.position.array[1]);
 		for (let i = 0; i < geoPos.count; i++) {
 			const i3 = i * 3;
 			// console.log(geoPos[i3 + 1]);
@@ -157,6 +157,7 @@ export const Grass = ({
 					roughnessMap={groundR}
 					displacementMap={groundH}
 					normalMap={groundN}
+					roughness={0}
 				/>
 			</mesh>
 		</group>
