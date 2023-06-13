@@ -25,7 +25,7 @@ import * as THREE from 'three';
 //-------------Project Files-------------//
 //////////////////////////////////
 import cloud from '/assets/cloud.png';
-import { WeatherContext } from '../main';
+import { WeatherContext } from '/Main.jsx';
 export const Clouds = (props) => {
 	//////////////////////////////////
 	//-------------Refs-------------//
