@@ -1,18 +1,50 @@
-import * as THREE from 'three';
+//////////////////////////////////
+//-------------Dependencies-------------//
+//////////////////////////////////
+
+//////////
+//// React
+//////////
+import { useRef } from 'react';
+//////////
+//// React-Three
+//////////
 import { shaderMaterial } from '@react-three/drei';
+
+import { useFrame, extend, useLoader } from '@react-three/fiber';
+//////////
+//// Three.JS
+//////////
+import * as THREE from 'three';
+
+//////////
+//// Misc
+//////////
+import { useControls } from 'leva';
+//////////////////////////////////
+//-------------Project Files-------------//
+//////////////////////////////////
+
+//Shaders
 import oceanVertexShader from '/shaders/water/vertex.glsl';
 import oceanFragmentShader from '/shaders/water/fragment.glsl';
-import { useFrame } from '@react-three/fiber';
-import { useRef } from 'react';
-import { extend, useLoader } from '@react-three/fiber';
-import { useControls } from 'leva';
+
+//Textures
 import oceanAmbientOcclusion from '/assets/ocean/WaterAmbientOcclusion.jpg';
 import oceanBaseColor from '/assets/ocean/WaterColor.jpg';
 import oceanHeight from '/assets/ocean/WaterDisplacement.png';
 import oceanNormal from '/assets/ocean/WaterNormal.jpg';
 import oceanRoughness from '/assets/ocean/WaterRoughness.jpg';
+
 const OceanScale = 100;
 export const Ocean = () => {
+	//////////////////////////////////
+	//-------------Refs-------------//
+	//////////////////////////////////
+	const oceanMaterial = useRef();
+	//////////////////////////////////
+	//-------------Loaders-------------//
+	//////////////////////////////////
 	const [oceanTexture, oceanAO, oceanH, oceanN, oceanR] = useLoader(
 		THREE.TextureLoader,
 		[
@@ -23,20 +55,9 @@ export const Ocean = () => {
 			oceanRoughness,
 		]
 	);
+	//Shader Materials
 	const OceanMaterial = shaderMaterial(
 		{
-			// uBigWavesElevation: 0.2,
-			// uBigWavesFrequency: new THREE.Vector2(4, 1.5),
-			// uTime: 0,
-			// uBigWavesSpeed: 0.3,
-			// uDepthColor: new THREE.Color('#186691'),
-			// uSurfaceColor: new THREE.Color('#9bd8ff'),
-			// uColorOffset: 0.08,
-			// uColorMultiplier: 5,
-			// uSmallWavesElevation: 0.043,
-			// uSmallWavesFrequency: 10,
-			// uSmallWavesSpeed: 0.266,
-			// uSmallIterations: 4.0,
 			uBigWavesElevation: 0.21,
 			uBigWavesFrequency: new THREE.Vector2(1, 1.5),
 			uTime: 0,
@@ -60,69 +81,16 @@ export const Ocean = () => {
 		oceanFragmentShader
 	);
 	extend({ OceanMaterial });
-	// const {
-	// 	uBigWavesElevation,
-	// 	uBigWavesFrequency,
-	// 	uBigWavesSpeed,
-	// 	uColorOffset,
-	// 	uSmallWavesElevation,
-	// 	uSmallWavesFrequency,
-	// 	uSmallWavesSpeed,
-	// 	uSmallIterations,
-	// 	uDepthColor,
-	// 	uSurfaceColor,
-	// } = useControls('waves', {
-	// 	uDepthColor: new THREE.Color('#186691'),
-	// 	uSurfaceColor: new THREE.Color('#9bd8ff'),
-	// 	uBigWavesElevation: {
-	// 		value: 0.2,
-	// 		step: 0.01,
-	// 	},
-	// 	uBigWavesFrequency: {
-	// 		value: { x: 1, y: 1.5 },
-	// 		joystick: 'invertY',
-	// 		step: 0.01,
-	// 	},
-	// 	uBigWavesSpeed: {
-	// 		value: 0.3,
-	// 		step: 0.01,
-	// 	},
-	// 	uColorOffset: {
-	// 		value: 0.8,
-	// 		step: 0.01,
-	// 	},
-	// 	uSmallWavesElevation: {
-	// 		value: 0.043,
-	// 		step: 0.01,
-	// 	},
-	// 	uSmallWavesFrequency: {
-	// 		value: 10,
-	// 		step: 0.266,
-	// 	},
-	// 	uSmallWavesSpeed: {
-	// 		value: 4.0,
-	// 		step: 0.01,
-	// 	},
-	// 	uSmallIterations: {
-	// 		value: 0.2,
-	// 		step: 0.01,
-	// 	},
-	// });
-	const oceanMaterial = useRef();
+	//////////////////////////////////
+	//-------------R3F-Based Hooks-------------//
+	//////////////////////////////////
 	useFrame((state, delta) => {
 		oceanMaterial.current.uTime += delta;
-		// 	oceanMaterial.current.uBigWavesElevation = uBigWavesElevation;
-		// 	oceanMaterial.current.uBigWavesFrequency = uBigWavesFrequency;
-		// 	oceanMaterial.current.uBigWavesSpeed = uBigWavesSpeed;
-		// 	oceanMaterial.current.uColorOffset = uColorOffset;
-		// 	oceanMaterial.current.uSmallWavesElevation = uSmallWavesElevation;
-		// 	oceanMaterial.current.uSmallWavesFrequency = uSmallWavesFrequency;
-		// 	oceanMaterial.current.uSmallWavesSpeed = uSmallWavesSpeed;
-		// 	oceanMaterial.current.uSmallIterations = uSmallIterations;
-		// 	oceanMaterial.current.alphaTest = 1;
-		// 	oceanMaterial.current.uDepthColor = uDepthColor;
-		// 	oceanMaterial.current.uSurfaceColor = uSurfaceColor;
 	});
+
+	//////////////////////////////////
+	//-------------Component Sent to Experience.jsx-------------//
+	//////////////////////////////////
 	return (
 		<group position={[0, -5, -20]}>
 			<mesh rotation-x={-Math.PI * 0.5} scale={1}>

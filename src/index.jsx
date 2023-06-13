@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { Main } from '/Main.jsx';
 import { Canvas } from '@react-three/fiber';
 import '/index.css';
+import '/styling.scss';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
 	<Canvas
@@ -14,6 +15,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 		}}
 		shadows
 	>
+		{/* <WeatherContext.Provider value={{ weather, setWeather }}> */}
 		<Main />
+		{/* </WeatherContext.Provider> */}
 	</Canvas>
 );
