@@ -1,31 +1,53 @@
+//////////////////////////////////
+//-------------Dependencies-------------//
+//////////////////////////////////
+
+//////////
+//// React
+//////////
+import { useEffect, useRef, useContext, useLayoutEffect } from 'react';
+
+//////////
+//// React-Three
+//////////
 import { Sparkles } from '@react-three/drei';
+import { useFrame } from '@react-three/fiber';
+//////////
+//// Three.JS
+//////////
 import * as THREE from 'three';
-import {
-	Suspense,
-	useEffect,
-	useMemo,
-	useRef,
-	useContext,
-	useState,
-	useLayoutEffect,
-} from 'react';
-import { useFrame, useLoader } from '@react-three/fiber';
+
+//////////
+//// Misc
+//////////
+
+//////////////////////////////////
+//-------------Project Files-------------//
+//////////////////////////////////
 import cloud from '/assets/cloud.png';
 import { WeatherContext } from '../main';
 export const Clouds = (props) => {
+	//////////////////////////////////
+	//-------------Refs-------------//
+	//////////////////////////////////
 	const materialRef = useRef();
-	const { weather, setWeather } = useContext(WeatherContext);
-	console.log(weather);
-
-	//Cloud Settings
 	const cloudGroup = useRef();
 	const cloudRef = useRef();
 	const cloudRef2 = useRef();
 	const cloudRef3 = useRef();
-	//Cloud Mesh
+	//////////////////////////////////
+	//-------------Loaders-------------//
+	//////////////////////////////////
 	//Cloud Texture
 	const particleTexture = new THREE.TextureLoader().load(cloud);
-	// const particleTexture = useLoader(THREE.TextureLoader, '/assets/smoke.png');
+	//////////////////////////////////
+	//-------------State-------------//
+	//////////////////////////////////
+	const { weather, setWeather } = useContext(WeatherContext);
+
+	//////////////////////////////////
+	//-------------ThreeJS Meshes-------------//
+	//////////////////////////////////
 	//Cloud Material
 	const particleMaterial = new THREE.PointsMaterial({
 		size: weather.size,
@@ -36,24 +58,27 @@ export const Clouds = (props) => {
 
 		map: particleTexture,
 	});
-	// const particleMaterial = new THREE.MeshLambertMaterial({
-	// 	map: particleTexture,
-	// 	transparent: true,
-	// });
 
-	//Hooks
+	//////////////////////////////////
+	//-------------React-Based Hooks-------------//
+	//////////////////////////////////
 	useLayoutEffect(() => {}, []);
 	useEffect(() => {
 		particleMaterial.color = new THREE.Color(weather.color);
 		cloudRef.current.material = particleMaterial;
 		cloudRef2.current.material = particleMaterial;
 		cloudRef3.current.material = particleMaterial;
-		console.log(cloudRef);
 	}, [weather]);
+	//////////////////////////////////
+	//-------------R3F-Based Hooks-------------//
+	//////////////////////////////////
 	useFrame((state, delta) => {
 		cloudGroup.current.rotation.y += delta * 0.015;
 		cloudGroup.current.rotation.x = Math.PI * 0.05;
 	});
+	//////////////////////////////////
+	//-------------Component Sent to Experience.jsx-------------//
+	//////////////////////////////////
 	return (
 		<group ref={cloudGroup}>
 			<Sparkles
@@ -64,16 +89,7 @@ export const Clouds = (props) => {
 				size={weather.size}
 				scale={[100, 17, 100]}
 				position={[0, 30, -5]}
-			>
-				{/* <meshLambertMaterial
-					ref={materialRef}
-					attach="material"
-					map={particleTexture}
-					transparent
-					side={THREE.DoubleSide}
-					opacity={weather.opacity}
-				/> */}
-			</Sparkles>
+			></Sparkles>
 			<Sparkles
 				ref={cloudRef2}
 				speed={weather.speed}
@@ -81,18 +97,8 @@ export const Clouds = (props) => {
 				amount={weather.amount}
 				size={weather.size}
 				scale={[100, 17, 100]}
-				position={[0, 25, -20]}
-			>
-				{/* <meshLambertMaterial
-					ref={materialRef}
-					attach="material"
-					map={particleTexture}
-					transparent
-					side={THREE.DoubleSide}
-					opacity={weather.opacity}
-					blending={THREE.AdditiveBlending}
-				/> */}
-			</Sparkles>
+				position={[0, 35, -20]}
+			></Sparkles>
 			<Sparkles
 				ref={cloudRef3}
 				speed={weather.speed}
@@ -100,18 +106,8 @@ export const Clouds = (props) => {
 				amount={weather.amount}
 				size={weather.size}
 				scale={[100, 17, 100]}
-				position={[10, 30, -5]}
-			>
-				{/* <meshStandardMaterial
-					ref={materialRef}
-					attach="material"
-					map={particleTexture}
-					transparent
-					side={THREE.DoubleSide}
-					opacity={weather.opacity}
-					blending={THREE.AdditiveBlending}
-				/> */}
-			</Sparkles>
+				position={[10, 40, -5]}
+			></Sparkles>
 		</group>
 	);
 };

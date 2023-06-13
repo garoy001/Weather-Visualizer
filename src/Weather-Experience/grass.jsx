@@ -1,34 +1,38 @@
 /**
- * /////////
- * /////////
  * ///////// // Created with the help of https://codesandbox.io/s/grass-shader-5xho4?from-embed=&file=/src/Grass.js
- * /////////
- * /////////
  */
-import * as THREE from 'three';
+//////////////////////////////////
+//-------------Dependencies-------------//
+//////////////////////////////////
+
+//////////
+//// React
+//////////
+import React, { useRef, useMemo, useEffect } from 'react';
+//////////
+//// React-Three
+//////////
 import { useFrame, useLoader, extend } from '@react-three/fiber';
 import { shaderMaterial } from '@react-three/drei';
+//////////
+//// Three.JS
+//////////
+import * as THREE from 'three';
+//////////
+//// Misc
+//////////
 import { createNoise2D } from 'simplex-noise';
-import React, { useRef, useMemo, useEffect } from 'react';
+
 import alea from 'alea';
+//////////////////////////////////
+//-------------Project Files-------------//
+//////////////////////////////////
+
 //Shaders
 //----Grass
 import grassVertexShader from '/shaders/grass/vertex.glsl';
 import grassFragmentShader from '/shaders/grass/fragment.glsl';
-//Materials
-//----Grass
-import bladeDiffuse from '/assets/grass/bladediffuse.jpg';
-import bladeAlpha from '/assets/grass/bladealpha.jpg';
-//----Ground
-import groundAmbientOcclusion from '/assets/ground/Ground_AmbientOcclusion.jpg';
-import groundBaseColor from '/assets/ground/Ground_Basecolor.jpg';
-import groundHeight from '/assets/ground/Ground_Height.png';
-import groundNormal from '/assets/ground/Ground_Normal.jpg';
-import groundRoughness from '/assets/ground/Ground_Roughness.jpg';
-const randomSeed = alea('seed');
-const widthMult = 4;
-const noise2D = createNoise2D(randomSeed);
-
+//Shader Materials
 const GrassMaterial = shaderMaterial(
 	{
 		bladeHeight: 1,
@@ -42,19 +46,43 @@ const GrassMaterial = shaderMaterial(
 	grassFragmentShader
 );
 extend({ GrassMaterial });
+//Textures
+//----Grass
+import bladeDiffuse from '/assets/grass/bladediffuse.jpg';
+import bladeAlpha from '/assets/grass/bladealpha.jpg';
+//----Ground
+import groundAmbientOcclusion from '/assets/ground/Ground_AmbientOcclusion.jpg';
+import groundBaseColor from '/assets/ground/Ground_Basecolor.jpg';
+import groundHeight from '/assets/ground/Ground_Height.png';
+import groundNormal from '/assets/ground/Ground_Normal.jpg';
+import groundRoughness from '/assets/ground/Ground_Roughness.jpg';
+
+//Random Seed
+const randomSeed = alea('seed');
+const noise2D = createNoise2D(randomSeed);
+const widthMult = 4;
 export const Grass = ({
 	options = { bW: 0.12, bH: 1, joints: 5 },
 	width = 30,
 	instances = 15000 * widthMult,
 	...props
 }) => {
+	//////////////////////////////////
+	//-------------Variables-------------//
+	//////////////////////////////////
+
+	const { bW, bH, joints } = options;
+	//////////////////////////////////
+	//-------------Refs-------------//
+	//////////////////////////////////
+
 	const grassGroup = useRef();
 	const geoGeometry = useRef();
-	// console.log(geoGeometry);
-
-	// console.log(grassGroup);
-	const { bW, bH, joints } = options;
 	const materialRef = useRef();
+
+	//////////////////////////////////
+	//-------------Loaders-------------//
+	//////////////////////////////////
 	const [texture, alphaMap] = useLoader(THREE.TextureLoader, [
 		bladeDiffuse,
 		bladeAlpha,
@@ -69,6 +97,10 @@ export const Grass = ({
 			groundRoughness,
 		]
 	);
+
+	//////////////////////////////////
+	//-------------React-Based Hooks-------------//
+	//////////////////////////////////
 	const attributeData = useMemo(
 		() => getAttributeData(instances, width),
 		[instances, width]
@@ -101,12 +133,23 @@ export const Grass = ({
 		}
 		geo.computeVertexNormals();
 	}, []);
+	//////////////////////////////////
+	//-------------R3F-Based Hooks-------------//
+	//////////////////////////////////
 
 	useFrame((state) => {
 		materialRef.current.uniforms.time.value = state.clock.elapsedTime / 4;
 	});
+	//////////////////////////////////
+	//-------------Component Sent to Experience.jsx-------------//
+	//////////////////////////////////
 	return (
 		<group {...props}>
+			{
+				//////////////////////////////////
+				//-------------Grass Blades-------------//
+				//////////////////////////////////
+			}
 			<mesh ref={grassGroup}>
 				<instancedBufferGeometry
 					index={baseGeom.index}
@@ -142,6 +185,11 @@ export const Grass = ({
 					side={THREE.DoubleSide}
 				/>
 			</mesh>
+			{
+				//////////////////////////////////
+				//-------------Ground-------------//
+				//////////////////////////////////
+			}
 			<mesh position={[0, 0, 0]}>
 				<planeGeometry
 					attach="geometry"
@@ -163,6 +211,11 @@ export const Grass = ({
 		</group>
 	);
 };
+{
+	//////////////////////////////////
+	//-------------Supporting Functions-------------//
+	//////////////////////////////////
+}
 function getAttributeData(instances, width) {
 	const offsets = [];
 	const orientations = [];
